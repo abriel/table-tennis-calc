@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tennis goals count - settings</title>
+</head>
+<body style="font-size: x-large;">
+<form method="post" action="{% url 'app-settings-update' %}">
+  <label for="end_score">End Score</label>
+  <input type="text" id="end_score" name="end_score" value="{{end_score}}" size="5" maxlength="2">
+  <br><br>
+
+  <label for="innings">Innings</label>
+  <input type="text" id="innings" name="innings" value="{{innings}}" size="5" maxlength="2">
+  <br>
+
+  <br>
+  <input type="submit" name="Submit" value="Update">
+  {% csrf_token %}
+</form>
+<br>
+It is {% now "jS F Y H:i:s" %}
+<br><br>
+<a href="{% url 'app-index' %}">Go Back</a>
+</body>
+</html>
