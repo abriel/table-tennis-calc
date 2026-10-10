@@ -1,0 +1,308 @@
+/* Table-tennis score SPA — mobile first, high contrast (viewed across a table).
+   Faithful to the original app.css layout: two big tap blocks, solid-green
+   server block, dotted-green next-server outline, super-score line and a
+   two-button reset row. */
+
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --ink: #16181d;
+  --ink-soft: #5c6470;
+  --line: #d6dae0;
+  --green: #1a9e4b;
+  --green-ink: #ffffff;
+  --danger: #c0392b;
+  --warn: #b26a00;
+  --banner: #1a9e4b;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --card: #1e2127;
+    --ink: #f2f4f7;
+    --ink-soft: #9aa3af;
+    --line: #3a3f47;
+    --green: #22b55e;
+    --banner: #17331f;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+.page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+/* ------------------------------- top bar ------------------------------- */
+
+.top_bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1em;
+  flex-wrap: wrap;
+  padding: 0.6em 1em 0.4em;
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+}
+
+.title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.settings_link { color: var(--ink-soft); }
+
+.linklike {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--green);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ----------------------------- wake lock ------------------------------- */
+
+.wake_lock_message {
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 0 1em;
+}
+.wake_lock_ok   { color: var(--green); }
+.wake_lock_fail { color: var(--warn); }
+
+/* ----------------------------- start hint ------------------------------ */
+
+.start_hint {
+  margin: 0.4em 1em;
+  text-align: center;
+  font-size: clamp(0.9rem, 2.8vw, 1.1rem);
+  color: var(--ink-soft);
+  background: var(--card);
+  border: 1px dashed var(--line);
+  border-radius: 1em;
+  padding: 0.35em 1em;
+  align-self: center;
+}
+
+/* ----------------------------- score blocks ---------------------------- */
+
+.score_block {
+  flex: 1 1 0;
+  margin: 0.5em 1em;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2em;
+  background: var(--card);
+  border: 4px solid var(--line);
+  border-radius: 24px;
+  cursor: pointer;
+  outline: none;
+  transition: transform 60ms ease, border-color 120ms ease, background-color 120ms ease;
+}
+
+.score_block:active { transform: scale(0.985); }
+
+.score_block:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--green) 40%, transparent); }
+
+.player_label {
+  font-size: clamp(0.95rem, 3.2vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.score_digit {
+  font-size: clamp(5rem, 26vh, 13rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* current server (original: .active_score_block — solid green) */
+.active_score_block {
+  background: var(--green);
+  border-color: var(--green);
+}
+.active_score_block .player_label { color: rgba(255, 255, 255, 0.85); }
+.active_score_block .score_digit { color: var(--green-ink); }
+
+/* serves after the next point (original: .next_active_score_block — dotted) */
+.next_active_score_block {
+  border-style: dotted;
+  border-color: var(--green);
+}
+
+/* ------------------------------ super score ---------------------------- */
+
+.super_score_block {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.8em;
+  padding: 0.3em 1em;
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
+}
+
+.super_score_label {
+  font-size: 0.55em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+}
+
+.super_score_value { font-variant-numeric: tabular-nums; font-weight: 700; }
+
+/* ---------------------------- reset buttons ---------------------------- */
+
+.reset_block {
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.4em 1em 0;
+}
+
+.btn {
+  flex: 1 1 0;
+  padding: 0.7em 1em;
+  font: inherit;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.btn:active { transform: scale(0.985); }
+
+.btn_primary {
+  color: var(--green-ink);
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.key_hints {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  padding: 0.2em 1em 0.6em;
+}
+
+/* ------------------------------ game banner ---------------------------- */
+
+.game_banner {
+  position: fixed;
+  top: 1em;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: var(--banner);
+  color: var(--green-ink);
+  border-radius: 16px;
+  padding: 0.7em 1.4em;
+  text-align: center;
+  font-size: clamp(1rem, 3.4vw, 1.3rem);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  animation: banner-in 180ms ease-out;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .game_banner { color: #eafff1; }
+}
+
+.game_banner_sub { font-size: 0.75em; opacity: 0.85; margin-top: 0.15em; }
+
+@keyframes banner-in {
+  from { opacity: 0; transform: translate(-50%, -0.6em); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* -------------------------------- modal -------------------------------- */
+
+.modal_backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.modal {
+  width: min(26rem, 100%);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 20px;
+  padding: 1.4em 1.6em;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 { margin: 0 0 1em; font-size: 1.4rem; }
+
+.modal label {
+  display: block;
+  margin: 0.9em 0 0.25em;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+.modal input[type="number"] {
+  width: 7em;
+  padding: 0.5em 0.7em;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+}
+
+.form_error {
+  margin-top: 0.8em;
+  color: var(--danger);
+  font-size: 0.95rem;
+}
+
+.modal_buttons {
+  display: flex;
+  gap: 0.8em;
+  margin-top: 1.4em;
+}
+
+.modal_footer {
+  margin-top: 1.2em;
+  padding-top: 0.8em;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
